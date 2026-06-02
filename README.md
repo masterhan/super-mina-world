@@ -33,12 +33,13 @@ It's a plain website — no build step, no tools. To publish it free:
 2. Repo **Settings → Pages → Branch: `main`, folder: `/ (root)` → Save**.
 3. It goes live at `https://YOURNAME.github.io/super-mina-world/`.
 
-**Live URL:** _(filled in after the first deploy)_
+**Live URL:** **https://masterhan.github.io/super-mina-world/** — open it on a phone, tablet, or computer.
 
 ## ↩️ Going back to a known-good version
 
-Each chapter is tagged (`v1.0-spark`, `v1.1-atlas`, `v1.2-webville`, `v1.3-logiclake`, `v1.4-workshop`).
-To roll back: `git checkout <tag>`. Git history is the backup — every version is reversible.
+The first full build (Chapters 1–4 + Workshop) is tagged **`v1.0`**. To roll back to any known-good
+version: `git checkout v1.0`. Git history is the backup — every version is reversible. As the game
+grows, tag each new milestone the same way.
 
 ## 🛠️ For the next builder (how it's made)
 
