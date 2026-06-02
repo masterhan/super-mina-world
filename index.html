@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Super Mina World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<div class="device" id="device">
+  <canvas id="rain"></canvas>
+  <div class="vignette"></div>
+  <div class="scan"></div>
+  <button class="snd" id="snd">♪ ON</button>
+  <div id="world"></div>
+  <div class="flash" id="flash"></div>
+  <div id="layer"></div>
+</div>
+
+<!-- engine + systems (plain scripts, no build step; order matters) -->
+<script src="src/save.js"></script>
+<script src="src/audio.js"></script>
+<script src="src/rain.js"></script>
+<script src="src/creatures.js"></script>
+<script src="src/characters.js"></script>
+<script src="src/world.js"></script>
+<script src="src/dialogue.js"></script>
+<script src="src/badges.js"></script>
+<script src="src/engine.js"></script>
+
+<!-- chapter mechanics (mini-games) -->
+<script src="src/mechanics/quiz.js"></script>
+<script src="src/mechanics/webbuilder.js"></script>
+<script src="src/mechanics/sequencer.js"></script>
+<script src="src/mechanics/minigames.js"></script>
+
+<!-- chapters as DATA -->
+<script src="src/chapters/chapter1.js"></script>
+<script src="src/chapters/chapter2.js"></script>
+<script src="src/chapters/chapter3.js"></script>
+<script src="src/chapters/chapter4.js"></script>
+<script src="src/chapters/workshop.js"></script>
+
+<script>PR.engine.boot();</script>
+</body>
+</html>
