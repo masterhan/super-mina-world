@@ -16,7 +16,8 @@ PR.engine = (function () {
     chapter: 1,
     choices: {},
     nextBuild: null,
-    stars: {}
+    stars: {},
+    introDone: false
   };
 
   let device, layer, flash, A;
@@ -26,7 +27,7 @@ PR.engine = (function () {
       player: PR.state.player, buddy: PR.state.buddy,
       badges: PR.state.badges, chapter: PR.state.chapter,
       choices: PR.state.choices, nextBuild: PR.state.nextBuild,
-      stars: PR.state.stars
+      stars: PR.state.stars, introDone: PR.state.introDone
     });
   }
 
@@ -45,6 +46,8 @@ PR.engine = (function () {
     if (s.choices) PR.state.choices = s.choices;
     if (s.nextBuild) PR.state.nextBuild = s.nextBuild;
     if (s.stars && typeof s.stars === 'object') PR.state.stars = s.stars;
+    // intro counts as done if explicitly saved OR they already earned the Spark badge (migrates older saves)
+    if (s.introDone || (Array.isArray(s.badges) && s.badges.includes(1))) PR.state.introDone = true;
   }
 
   // ---- BYTE on screen (persists across scenes once summoned) ----
@@ -259,7 +262,7 @@ PR.engine = (function () {
 
     fn(scene, next) { scene.run(A, next); },
 
-    map(scene, next) { PR.map.show(A); }   // the overworld map takes over the flow from here
+    map(scene, next) { PR.state.introDone = true; persist(); PR.map.show(A); }   // reaching the map = intro done; skip it next time
   };
 
   // lines may be an array, or a function(state) returning an array (for name interpolation)
@@ -270,7 +273,7 @@ PR.engine = (function () {
   // =========================================================================
   let cur = null;
   function newGamePlus() {
-    PR.state.badges = []; PR.state.nextBuild = null; PR.state.chapter = 1; PR.state.stars = {};
+    PR.state.badges = []; PR.state.nextBuild = null; PR.state.chapter = 1; PR.state.stars = {}; PR.state.introDone = false;
     persist(); run(PR.chapters.chapter1);
   }
   function run(chapter) {
@@ -318,7 +321,8 @@ PR.engine = (function () {
     const snd = document.getElementById('snd');
     if (snd) snd.onclick = function () { this.textContent = PR.audio.toggle() ? '♪ ON' : '♪ OFF'; };
 
-    run(PR.chapters.chapter1);
+    if (PR.state.introDone && PR.map) PR.map.show(A);   // already did the intro on this device → straight to the World map
+    else run(PR.chapters.chapter1);
   }
 
   return { boot, run, get api() { return A; } };

@@ -44,7 +44,10 @@ PR.map = (function () {
     const castle = document.createElement('div');
     castle.className = 'castle' + (allDone ? ' lit' : '');
     castle.style.left = '50%'; castle.style.top = '9%'; castle.textContent = '🏰';
-    if (allDone) { castle.style.cursor = 'pointer'; castle.title = 'Play again!'; castle.onclick = () => { PR.audio.fanfare(); A.restart(); }; }
+    if (allDone) { // tapping the lit castle replays the games (keeps BYTE + name; never re-does the intro)
+      castle.style.cursor = 'pointer'; castle.title = 'Play again!';
+      castle.onclick = () => { PR.audio.fanfare(); PR.creature.sparkleBurst(A.device, 16); PR.state.stars = {}; lastDone = null; A.save(); show(A); };
+    }
     map.appendChild(castle);
 
     NODES.forEach(n => {
