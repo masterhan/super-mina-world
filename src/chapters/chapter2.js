@@ -21,7 +21,7 @@ PR.chapters.chapter2 = {
       'Don\'t worry — there\'s no losing here. Pick the best answer; if it\'s not right, I\'ll help you find it. Ready?'
     ] },
 
-    { type: 'mechanic', name: 'quiz', config: { count: 10 }, store: 'lastQuizScore' },
+    { type: 'mechanic', name: 'quiz', config: { count: 12 }, store: 'lastQuizScore' },
 
     { type: 'world', action: 'lit' },
     { type: 'buddy', action: 'show' },

@@ -10,12 +10,13 @@ PR.mechanics.quiz = (function () {
   // pixel-art silhouettes ('#' = land). Stylized, but consistent so the shape↔name
   // association sticks. Used for "which continent/state is this?" questions.
   const PIX = {
-    south_america: ['..#####......','.#######.....','.########....','.########....','..#######....','..######.....','...#####.....','...####......','...###.......','....##.......','....#........'],
-    africa:        ['..######.....','.#########...','.##########..','.#########...','..########...','..#######....','...######....','...#####.....','....####.....','....###......','.....#.......'],
-    north_america: ['.##...####...','.###.######..','.##########..','.##########..','..########...','...######....','....####.....','....###......','.....##......','.....#.......','.....#.......'],
-    australia:     ['.............','..#######....','.#########...','.##########..','.#########...','..#######....','...####......','.............'],
-    antarctica:    ['.............','.............','.............','.............','.###########.','.###########.','..#########..','.............','.............'],
-    texas:         ['##...........','##...........','########.....','########.....','#########....','#########....','.#######.....','..####.......','...##........']
+    south_america: ['..###.............', '..#######.........', '..########........', '.###########......', '##############....', '#################.', '.#################', '.################.', '..##############..', '....############..', '....############..', '....###########...', '....#########.....', '....########......', '....#######.......', '...######.........', '...######.........', '...###............', '...###............', '..####............', '..###.............', '...##.............'],
+    africa: ['...#.###............', '..########.#........', '..#############.....', '.##############.....', '################....', '################....', '#################...', '##################..', '.###################', '.......############.', '........##########..', '........#########...', '.........#######....', '.........########...', '.........########..#', '.........########.##', '.........######...#.', '.........######...#.', '.........######.....', '..........####......', '..........###.......'],
+    north_america: ['..#......###...###....', '.###############..##..', '.#############........', '..#...########...###..', '.......#########.####.', '........############..', '........############..', '........##########....', '.........########.....', '.........########.....', '...........####.......', '...........##...#.....', '............#.........', '.............##.......', '...............#......', '......................'],
+    australia: ['......................', '..........###...#.....', '.......#.###....#.....', '......########.###....', '.....#############....', '...################...', '.###################..', '.####################.', '.#####################', '.#####################', '..####################', '..#######.###########.', '..####......#.#######.', '..............######..', '...............#####..', '......................', '.................##...', '..................#...'],
+    antarctica: ['........#.................', '................##.#####..', '........#...#############.', '...##.##....#############.', '..#####..################.', '..######..###############.', '#..#######################', '##########################'],
+    usa: ['.###########..........', '###############.....#.', '################..###.', '####################..', '###################...', '.##################...', '.#################....', '..###############.....', '.....###########......', '.........####..#......', '.........#......#.....', '................#.....'],
+    texas: ['.....####.........', '.....####.........', '.....####.........', '.....#####........', '.....###########..', '.....############.', '.....############.', '##################', '.#################', '..################', '...###############', '....#...########..', '.........######...', '.........####.....', '..........###.....', '..........###.....', '...........##.....']
   };
 
   // answer is always index 0 here; option order is shuffled on screen.
@@ -60,6 +61,40 @@ PR.mechanics.quiz = (function () {
     { q: 'Which is hotter, the sun or an ice cube?', o: ['The sun', 'An ice cube'] },
     { q: 'A country is made of many...',          o: ['Cities and towns', 'Planets', 'Suns'] },
     { q: 'Pick the planet.',                      o: ['Earth', 'Texas', 'Asia'] },
+    { q: 'What is the very cold place at the BOTTOM of the Earth called?', o: ['The South Pole', 'The beach', 'A desert'] },
+    { q: 'What is the very cold place at the TOP of the Earth called?',    o: ['The North Pole', 'A jungle', 'A city'] },
+    { q: 'A really big body of salty water is an...', o: ['Ocean', 'Puddle', 'Cup'] },
+    { q: 'Which is closer to us?',                 o: ['The Moon', 'The Sun'] },
+    { q: 'A dry place with lots of sand is a...',  o: ['Desert', 'Forest', 'Ocean'] },
+    { q: 'A place with LOTS of trees is a...',     o: ['Forest', 'Desert', 'Beach'] },
+    { q: 'Tall and rocky with snow on top — that\'s a...', o: ['Mountain', 'River', 'Lake'] },
+    { q: 'Water flowing in a long line across the land is a...', o: ['River', 'Mountain', 'Cloud'] },
+    { q: 'When it is nighttime, the sky is...',    o: ['Dark', 'Bright yellow'] },
+    { q: 'Which country has the Eiffel Tower?',    o: ['France', 'United States', 'Japan'] },
+    { q: 'Which country is shaped like a boot?',   o: ['Italy', 'Canada', 'Brazil'] },
+    { q: 'The famous pyramids are in this country.', o: ['Egypt', 'Mexico', 'Canada'] },
+    { q: 'Pandas come from this country.',         o: ['China', 'France', 'Australia'] },
+    { q: 'Polar bears live where it is very...',   o: ['Cold and snowy', 'Hot and sandy'] },
+    { q: 'Camels carry people across the hot, sandy...', o: ['Desert', 'Ocean', 'Forest'] },
+    { q: 'Which can you walk on?',                 o: ['Land', 'The deep ocean'] },
+    { q: 'Which is bigger, Texas or the whole United States?', o: ['The whole United States', 'Texas'] },
+    { q: 'Which is bigger, the United States or the whole Earth?', o: ['The whole Earth', 'The United States'] },
+    { q: 'Most maps are colored BLUE where there is...', o: ['Water', 'Grass', 'Sand'] },
+    { q: 'Maps are often colored GREEN where there is...', o: ['Land and grass', 'Deep water'] },
+    { q: 'How many oceans are on Earth?',          o: ['5', '1', '100'] },
+    { q: 'Which animal lives where it is icy and cold?', o: ['Penguin', 'Camel', 'Monkey'] },
+    { q: 'Which one is a planet?',                 o: ['Mars', 'Texas', 'The Pacific'] },
+    { q: 'The big star that gives us light and heat is the...', o: ['Sun', 'Moon', 'Cloud'] },
+    { q: 'What is the opposite of North?',         o: ['South', 'Up'] },
+    { q: 'What is the opposite of East?',          o: ['West', 'Down'] },
+    { q: 'Houston and Austin are cities in which state?', o: ['Texas', 'Florida', 'Ohio'] },
+    { q: 'Which is a country in North America?',   o: ['Canada', 'France', 'China'] },
+    { q: 'Which is a country in Asia?',            o: ['Japan', 'Mexico', 'Brazil'] },
+    { q: 'Koalas and kangaroos come from...',      o: ['Australia', 'Canada', 'Egypt'] },
+    { q: 'The Sahara is the biggest, hottest ___ on Earth.', o: ['Desert', 'Forest', 'Lake'] },
+    { q: 'A whole country is made of lots of...',  o: ['Cities and towns', 'Suns', 'Moons'] },
+    { q: 'The ground we stand on, not the water, is called...', o: ['Land', 'Sky', 'Rain'] },
+    { q: 'Which is a continent AND a country?',    o: ['Australia', 'Texas', 'Paris'] },
     // ---- pixel-art identification (continents + our state) ----
     { q: 'Which continent is this?', art: 'south_america', o: ['South America', 'Africa', 'Europe'] },
     { q: 'Which continent is this?', art: 'africa',        o: ['Africa', 'Australia', 'North America'] },
@@ -67,13 +102,65 @@ PR.mechanics.quiz = (function () {
     { q: 'Which icy continent is this?', art: 'antarctica', o: ['Antarctica', 'Africa', 'Europe'] },
     { q: 'Which continent is this?', art: 'north_america', o: ['North America', 'South America', 'Africa'] },
     { q: 'Which state is this? (it\'s ours!)', art: 'texas', o: ['Texas', 'Florida', 'California'] },
+    { q: 'Which country is this?', art: 'usa', o: ['United States', 'Canada', 'Mexico'] },
     // ---- flags ----
     { q: 'Whose flag is this?', flag: '🇺🇸', o: ['United States', 'Mexico', 'Brazil'] },
     { q: 'Whose flag is this?', flag: '🇲🇽', o: ['Mexico', 'Canada', 'United States'] },
     { q: 'Whose flag is this?', flag: '🇨🇦', o: ['Canada', 'France', 'Mexico'] },
     { q: 'Whose flag is this?', flag: '🇧🇷', o: ['Brazil', 'United States', 'Japan'] },
-    { q: 'Whose flag is this?', flag: '🇯🇵', o: ['Japan', 'Canada', 'Egypt'] }
+    { q: 'Whose flag is this?', flag: '🇯🇵', o: ['Japan', 'Canada', 'Egypt'] },
+    { q: 'Whose flag is this?', flag: '🇫🇷', o: ['France', 'Italy', 'Egypt'] },
+    { q: 'Whose flag is this?', flag: '🇨🇳', o: ['China', 'Canada', 'Brazil'] }
   ];
+
+  // One friendly fact per place. When she taps a WRONG answer we show that place's fact,
+  // so a wrong tap teaches her what that place actually is (e.g. tap Mexico → it's our SOUTHERN neighbor).
+  const FACTS = {
+    'United States': 'The United States is OUR country — 50 states together, in North America.',
+    'Mexico': 'Mexico is the country on the SOUTHERN border of the United States.',
+    'Canada': 'Canada is the big country on the NORTHERN border of the United States.',
+    'Brazil': 'Brazil is the biggest country in South America — home of the Amazon rainforest.',
+    'France': 'France is a country in Europe — it has the Eiffel Tower.',
+    'Italy': 'Italy is a country in Europe, shaped like a boot.',
+    'Egypt': 'Egypt is a country in Africa — it has the famous pyramids.',
+    'Japan': 'Japan is a country in Asia, made of islands.',
+    'China': 'China is a huge country in Asia — pandas come from there.',
+    'North America': 'North America is OUR continent — the USA, Canada and Mexico are all on it.',
+    'South America': 'South America is the continent below us — it has the Amazon rainforest.',
+    'Africa': 'Africa is a big continent with lions, elephants and the Sahara desert.',
+    'Europe': 'Europe is a continent across the ocean — France and Italy are there.',
+    'Asia': 'Asia is the BIGGEST continent — China and Japan are there.',
+    'Australia': 'Australia is BOTH a country and a continent — home of kangaroos and koalas.',
+    'Antarctica': 'Antarctica is the coldest, iciest continent — penguins live there.',
+    'Texas': 'Texas is OUR state — a state inside the United States.',
+    'California': 'California is another state in the United States, way out west.',
+    'Florida': 'Florida is a state in the United States, down in the southeast.',
+    'Ohio': 'Ohio is a state up in the middle of the United States.',
+    'Houston': 'Houston is a city — it\'s in our state, Texas.',
+    'Dallas': 'Dallas is a city in Texas.',
+    'Paris': 'Paris is a city — the capital of France.',
+    'Earth': 'Earth is OUR planet — the one we live on.',
+    'Mars': 'Mars is a different planet — the red one.',
+    'the Moon': 'The Moon circles the Earth — it is not a planet.',
+    'the Sun': 'The Sun is the giant star that gives us light and heat.',
+    'The Sun': 'The Sun is the giant star that gives us light and heat.',
+    'The Moon': 'The Moon circles the Earth — it is not a planet.',
+    'The Pacific': 'The Pacific is the biggest OCEAN — not a country or a planet.',
+    'The South Pole': 'The South Pole is the icy bottom of the Earth.',
+    'The North Pole': 'The North Pole is the icy top of the Earth.',
+    'Desert': 'A desert is a dry, sandy place with very little water.',
+    'Forest': 'A forest is a place with lots and lots of trees.',
+    'Mountain': 'A mountain is tall and rocky, often with snow on top.',
+    'River': 'A river is water that flows in a long line across the land.',
+    'Ocean': 'An ocean is a giant body of salty water.',
+    'Land': 'Land is the ground we walk on — not the water.',
+    'Water': 'Most of the Earth is covered in water — the oceans.',
+    'South': 'South is the opposite of North — Mexico is south of us.',
+    'North': 'North is the opposite of South — Canada is north of us.',
+    'West': 'West is the opposite of East — where the sun sets.',
+    'East': 'East is the opposite of West — where the sun rises.',
+    'Mountain': 'A mountain is tall and rocky, often with snow on top.'
+  };
 
   function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
@@ -107,19 +194,23 @@ PR.mechanics.quiz = (function () {
       const correctText = item.o[0];
       const opts = shuffle(item.o.map((t, i) => ({ t, correct: i === 0 })));
       const list = document.createElement('div');
-      list.style.cssText = 'display:flex;flex-direction:column;gap:9px;width:100%;max-width:320px;margin-top:4px';
+      list.style.cssText = 'display:flex;flex-direction:column;gap:9px;width:100%;max-width:330px;margin-top:4px';
+      // explanation line — fills in with a fact about whatever WRONG place she taps
+      const msg = document.createElement('div');
+      msg.style.cssText = 'font-family:"VT323",monospace;font-size:20px;line-height:1.3;color:var(--glow-soft);text-align:center;max-width:340px;min-height:56px;margin-top:2px';
       let answered = false; let correctBtn = null;
       opts.forEach(op => {
         const b = document.createElement('button');
         b.className = 'qopt';
         b.textContent = op.t;
-        b.style.cssText = 'font-size:20px;padding:13px;width:100%';
+        b.style.cssText = 'font-size:25px;padding:16px;width:100%';
         if (op.correct) correctBtn = b;
         b.onclick = () => {
           if (answered) return;
           if (op.correct) {
             answered = true;
             b.style.borderColor = 'var(--glow)'; b.style.boxShadow = '0 0 16px var(--glow)'; b.style.color = 'var(--glow)';
+            msg.textContent = '';
             PR.audio.win(); PR.creature.sparkleBurst(api.device, 8); PR.rain.surge(2);
             got++;
             setTimeout(() => { idx++; if (idx >= N) win(); else render(); }, 750);
@@ -127,11 +218,13 @@ PR.mechanics.quiz = (function () {
             PR.audio.buzz();
             b.disabled = true; b.style.opacity = '0.35';
             if (correctBtn) { correctBtn.style.boxShadow = '0 0 14px var(--glow)'; correctBtn.style.borderColor = 'var(--glow)'; }
+            msg.textContent = 'Not quite! ' + (FACTS[op.t] || 'That’s not the one — tap the glowing answer.');
           }
         };
         list.appendChild(b);
       });
       wrap.appendChild(list);
+      wrap.appendChild(msg);
     }
 
     function drawPix(grid) {
