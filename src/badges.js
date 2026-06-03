@@ -5,7 +5,7 @@ window.PR = window.PR || {};
 PR.badge = {
   // opts = { index:1..8, name:'SPARK', icon:'✦', total:8 }
   award(opts, api, onDone) {
-    const total = opts.total || 8;
+    const total = opts.total || 7;
     if (!PR.state.badges.includes(opts.index)) PR.state.badges.push(opts.index);
     if (api && api.save) api.save();
 

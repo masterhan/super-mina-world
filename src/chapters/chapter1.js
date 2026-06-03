@@ -23,7 +23,7 @@ PR.chapters = PR.chapters || {};
 
   PR.chapters.chapter1 = {
     chapterNum: 1,
-    next: 'chapter2',
+    next: null,
     scenes: [
       { type: 'wake' },
       { type: 'boot' },
@@ -74,14 +74,13 @@ PR.chapters = PR.chapters || {};
       { type: 'badge', index: 1, name: 'SPARK', icon: '✦' },
 
       { type: 'dialogue', speaker: 'CIPHER', character: 'cipher', lines: (s) => [
-        'Eight regions. Eight badges. Light them all and the whole World wakes up.',
-        'Head east first — THE ATLAS. The great map went dark and forgot the names of the lands. The whole world\'s gone black in there.',
-        'You and ' + s.buddy.name + ' will light it back up. I\'d bet the whole grid on it.',
-        '...Hold on. You see that? Somebody watching us, back in the rain of code.',
-        '...Gone. Stay sharp out there, ' + s.player.name + '.'
+        'Whoa — you lit the first spark!',
+        'And look... the whole WORLD just opened up. A MAP!',
+        'Every glowing spot is a game to play.',
+        'Tap any one and jump right in, ' + s.player.name + '. You and ' + s.buddy.name + ' go wherever you want!'
       ] },
 
-      { type: 'end', title: 'THE ATLAS\nAWAITS', sub: 'Chapter 1 complete', press: 'GO' }
+      { type: 'map' }
     ]
   };
 })();

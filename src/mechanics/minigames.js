@@ -29,7 +29,7 @@ PR.mechanics.minigames = (function () {
     const cv = document.createElement('canvas'); cv.className = 'mgc'; cv.width = 250; cv.height = 250;
     const hint = document.createElement('div'); hint.className = 'mgtap'; hint.textContent = A.sub;
     const bar = document.createElement('div'); bar.className = 'panel'; bar.style.cssText = 'display:flex;gap:8px';
-    bar.innerHTML = '<button id="back" style="flex:1">↺ TRY ANOTHER</button><button id="pick" class="summon" style="flex:1;margin:0">✓ BUILD THIS</button>';
+    bar.innerHTML = '<button id="back" class="summon" style="flex:1;margin:0">↩ BACK</button>';
     mg.appendChild(hud); mg.appendChild(cv); mg.appendChild(hint);
     api.layer.appendChild(mg); api.layer.appendChild(bar);
 
@@ -39,7 +39,6 @@ PR.mechanics.minigames = (function () {
 
     function cleanup() { stop(); mg.remove(); bar.remove(); }
     bar.querySelector('#back').onclick = () => { PR.audio.tone(500, 0.05); cleanup(); cbs.onBack(); };
-    bar.querySelector('#pick').onclick = () => { PR.audio.tone(880, 0.08); cleanup(); cbs.onPick(theme); };
   }
 
   // ===================== the games =====================

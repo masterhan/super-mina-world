@@ -15,7 +15,8 @@ PR.engine = (function () {
     badges: [],
     chapter: 1,
     choices: {},
-    nextBuild: null
+    nextBuild: null,
+    stars: {}
   };
 
   let device, layer, flash, A;
@@ -24,7 +25,8 @@ PR.engine = (function () {
     PR.save.write({
       player: PR.state.player, buddy: PR.state.buddy,
       badges: PR.state.badges, chapter: PR.state.chapter,
-      choices: PR.state.choices, nextBuild: PR.state.nextBuild
+      choices: PR.state.choices, nextBuild: PR.state.nextBuild,
+      stars: PR.state.stars
     });
   }
 
@@ -42,6 +44,7 @@ PR.engine = (function () {
     if (Array.isArray(s.badges)) PR.state.badges = s.badges;
     if (s.choices) PR.state.choices = s.choices;
     if (s.nextBuild) PR.state.nextBuild = s.nextBuild;
+    if (s.stars && typeof s.stars === 'object') PR.state.stars = s.stars;
   }
 
   // ---- BYTE on screen (persists across scenes once summoned) ----
@@ -254,7 +257,9 @@ PR.engine = (function () {
       t.onclick = () => { PR.audio.tone(659); t.remove(); next(); };
     },
 
-    fn(scene, next) { scene.run(A, next); }
+    fn(scene, next) { scene.run(A, next); },
+
+    map(scene, next) { PR.map.show(A); }   // the overworld map takes over the flow from here
   };
 
   // lines may be an array, or a function(state) returning an array (for name interpolation)
@@ -265,7 +270,7 @@ PR.engine = (function () {
   // =========================================================================
   let cur = null;
   function newGamePlus() {
-    PR.state.badges = []; PR.state.nextBuild = null; PR.state.chapter = 1;
+    PR.state.badges = []; PR.state.nextBuild = null; PR.state.chapter = 1; PR.state.stars = {};
     persist(); run(PR.chapters.chapter1);
   }
   function run(chapter) {
