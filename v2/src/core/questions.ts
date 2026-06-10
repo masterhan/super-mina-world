@@ -39,9 +39,11 @@ export class QuestionSource {
       }
     }
 
-    // 2) fresh draw at adaptive tier
+    // 2) fresh draw at adaptive tier (Remix Mode after beating the Glitch King:
+    //    everything starts at tier 2 minimum — full strength, as promised)
     const skill = this.skills[Math.floor(this.r() * this.skills.length)];
-    const tier = Math.min(3, currentTier(this.save, skill) + tierBoost) as 1 | 2 | 3;
+    const floor = this.save.citadel?.remix ? 2 : 1;
+    const tier = Math.min(3, Math.max(floor, currentTier(this.save, skill)) + tierBoost) as 1 | 2 | 3;
 
     if (MATH_SKILLS.includes(skill)) {
       const q = generate(skill, tier, this.r); // templates: every draw is a fresh variant
