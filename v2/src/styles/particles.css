@@ -1,0 +1,88 @@
+/* Particle Chamber — states-of-matter sim. Shares the .mech shell from mechanics.css.
+   All colors live HERE; particles.ts reads the --part-* variables for canvas drawing. */
+
+.partmech {
+  --part-bg: #0a0e1a;
+  --part-solid: #8fd9ff;
+  --part-liquid: #3da5ff;
+  --part-gas: #ff9a3d;
+  --part-a: #3df2ff;
+  --part-b: #ff7ad9;
+  --part-ring: #ffffff;
+}
+
+.parttarget { font-family: VT323, monospace; font-size: 24px; color: var(--ink); text-align: center; }
+.parttarget b { color: var(--gold); font-size: 26px; }
+
+.partframe {
+  position: relative;
+  width: min(88vw, 334px);
+  border: 2px solid var(--glow);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--part-bg);
+  flex-shrink: 0;
+}
+.partcanvas { display: block; width: 100%; height: auto; aspect-ratio: 330 / 250; }
+.partframe.partshake { animation: partshake 0.4s ease; }
+@keyframes partshake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.partstatus { width: min(88vw, 334px); display: flex; align-items: center; gap: 10px; }
+.partstate {
+  font-family: VT323, monospace;
+  font-size: 26px;
+  letter-spacing: 1px;
+  color: var(--ink);
+  min-width: 126px;
+}
+.partstate[data-state='solid'] { color: var(--part-solid); }
+.partstate[data-state='liquid'] { color: var(--part-liquid); }
+.partstate[data-state='gas'] { color: var(--part-gas); }
+.partstate[data-state='mix'] { color: var(--part-b); }
+
+.parthold {
+  flex: 1;
+  height: 16px;
+  border: 1px solid var(--glow);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(61, 242, 255, 0.06);
+}
+.partholdfill { height: 100%; width: 0%; background: var(--gold); transition: width 0.12s linear; }
+
+.parttemp { width: min(88vw, 334px); display: flex; flex-direction: column; gap: 3px; }
+.parttempbar {
+  position: relative;
+  height: 16px;
+  border: 1px solid var(--glow);
+  border-radius: 8px;
+  background: linear-gradient(90deg, #2a6cff 0%, #8fd9ff 30%, #ffd23d 62%, #ff5a3d 100%);
+}
+.parttempmark {
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  width: 5px;
+  margin-left: -2px;
+  background: #ffffff;
+  border: 1px solid #06080f;
+  border-radius: 3px;
+  transition: left 0.25s;
+}
+.parttempzones { display: flex; font-family: VT323, monospace; font-size: 16px; color: var(--glow-soft); }
+.parttempzones span:nth-child(1) { width: 34%; }
+.parttempzones span:nth-child(2) { width: 33%; text-align: center; }
+.parttempzones span:nth-child(3) { width: 33%; text-align: right; }
+
+/* mixture rounds: no temperature controls, just stirring */
+.partmech.partmix .parttemp { display: none; }
+
+/* big friendly tap targets on top of the shared button look */
+.partmech .mechbtns button { min-height: 52px; min-width: 126px; }
+.partmech .stirbtn { min-width: 180px; }

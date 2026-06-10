@@ -1,0 +1,307 @@
+/* Water Cycle Run — CSS-drawn scene: ocean at the bottom, sun top-left,
+   cloud top-right, mountains right. Tap zones are invisible buttons laid
+   over the scenery; Drip is a CSS teardrop with a face. */
+
+.watercyclemech { gap: 8px; }
+
+/* ---- scene ---- */
+.watercycle-scene {
+  position: relative;
+  width: min(100%, 360px);
+  height: 300px;
+  flex: none;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #1c2a4a;
+  background: linear-gradient(#0e2a5c 0%, #1d4f8a 55%, #2a6aa8 78%);
+}
+.watercycle-scene--cold {
+  background: linear-gradient(#0a1f3f 0%, #173a66 55%, #1f527e 78%);
+}
+
+.watercycle-sun {
+  position: absolute; left: 6%; top: 5%;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff3a8, #ffd23f 60%, #f5a623);
+  box-shadow: 0 0 26px 8px rgba(255, 210, 63, 0.45);
+  pointer-events: none;
+  z-index: 1;
+}
+.watercycle-scene--cold .watercycle-sun {
+  width: 40px; height: 40px;
+  background: radial-gradient(circle at 35% 35%, #f4f7ff, #cfe0f5 60%, #9fbcdc);
+  box-shadow: 0 0 18px 4px rgba(207, 224, 245, 0.35);
+}
+
+.watercycle-cloud {
+  position: absolute; right: 7%; top: 9%;
+  width: 110px; height: 44px;
+  background: #f2f6fb;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 2;
+  transition: transform 0.5s, background 0.5s;
+}
+.watercycle-cloud::before, .watercycle-cloud::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+.watercycle-cloud::before { width: 48px; height: 48px; left: 14px; top: -22px; }
+.watercycle-cloud::after  { width: 36px; height: 36px; right: 16px; top: -14px; }
+.watercycle-cloud--full { background: #b9c6d8; transform: scale(1.14); }
+.watercycle-scene--cold .watercycle-cloud { background: #dde9fb; }
+.watercycle-scene--cold .watercycle-cloud--full { background: #9fb3cf; }
+
+.watercycle-peak {
+  position: absolute;
+  bottom: 16%;
+  pointer-events: none;
+  z-index: 2;
+}
+.watercycle-peak--a {
+  right: 0; width: 150px; height: 125px;
+  background: linear-gradient(170deg, #5a7186 0 22%, #3b4f63 22%);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.watercycle-peak--b {
+  right: 28%; width: 110px; height: 92px;
+  background: linear-gradient(170deg, #4a5d70 0 20%, #2e3f50 20%);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.watercycle-scene--cold .watercycle-peak--a {
+  background: linear-gradient(170deg, #e8f1fb 0 34%, #3b4f63 34%);
+}
+.watercycle-scene--cold .watercycle-peak--b {
+  background: linear-gradient(170deg, #dbe8f6 0 30%, #2e3f50 30%);
+}
+
+.watercycle-stream {
+  position: absolute;
+  right: 18%;
+  bottom: 13%;
+  width: 14px;
+  height: 34%;
+  transform: rotate(24deg);
+  transform-origin: top center;
+  border-radius: 8px;
+  background: repeating-linear-gradient(180deg, #79d2f7 0 12px, #4aa9d8 12px 24px);
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 2;
+}
+.watercycle-stream--flow { animation: watercycle-flow 0.6s linear infinite; }
+@keyframes watercycle-flow {
+  from { background-position: 0 0; }
+  to   { background-position: 0 24px; }
+}
+
+.watercycle-ocean {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 17%;
+  background: linear-gradient(#5db8e8, #1f74b8 40%, #155a94);
+  pointer-events: none;
+  z-index: 3;
+}
+.watercycle-ocean::before {
+  content: '';
+  position: absolute; left: 0; right: 0; top: -8px; height: 16px;
+  background: radial-gradient(circle at 13px 16px, #5db8e8 8px, transparent 9px);
+  background-size: 26px 16px;
+  background-repeat: repeat-x;
+}
+.watercycle-scene--cold .watercycle-ocean { filter: brightness(0.8) saturate(0.8); }
+
+/* ---- tap zones (invisible buttons over the scene) ---- */
+.watercycle-zone {
+  position: absolute;
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  z-index: 5;
+  -webkit-tap-highlight-color: transparent;
+}
+.watercycle-zone:active { background: rgba(255, 255, 255, 0.06); }
+.watercycle-zone--sky   { left: 0;   top: 12%;  width: 52%;  height: 38%; }
+.watercycle-zone--cloud { right: 2%; top: 2%;   width: 44%;  height: 28%; }
+.watercycle-zone--rain  { right: 2%; top: 31%;  width: 44%;  height: 26%; }
+.watercycle-zone--ocean { left: 0;   bottom: 0; width: 100%; height: 19%; }
+.watercycle-scene--watch .watercycle-zone { pointer-events: none; }
+
+.watercycle-zone--hint {
+  border: 2px dashed rgba(255, 255, 255, 0.7);
+  animation: watercycle-pulse 1.1s ease-in-out infinite;
+}
+@keyframes watercycle-pulse {
+  0%, 100% { box-shadow: inset 0 0 0 rgba(255, 255, 255, 0); }
+  50%      { box-shadow: inset 0 0 24px rgba(255, 255, 255, 0.35); }
+}
+.watercycle-zone--wrong { animation: watercycle-wobble 0.45s ease; }
+@keyframes watercycle-wobble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-7px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+}
+
+/* ---- Drip ---- */
+.watercycle-drip {
+  position: absolute;
+  width: 34px; height: 34px;
+  z-index: 6;
+  pointer-events: none;
+  background: radial-gradient(circle at 35% 35%, #aee6ff, #4db5f0 60%, #1f86cc);
+  border: 2px solid #0d5e9c;
+  border-radius: 0 50% 50% 50%;   /* teardrop — the 0 corner is the tip */
+  transform: rotate(45deg);        /* tip points up */
+  transition: left 1.1s ease-in-out, top 1.1s ease-in-out, opacity 0.5s, transform 0.6s;
+}
+.watercycle-face {
+  position: absolute; inset: 0;
+  transform: rotate(-45deg);       /* keep the face upright */
+}
+.watercycle-eye {
+  position: absolute;
+  width: 5px; height: 6px;
+  border-radius: 50%;
+  background: #0a2a44;
+  top: 13px;
+}
+.watercycle-eye--l { left: 9px; }
+.watercycle-eye--r { right: 9px; }
+.watercycle-smile {
+  position: absolute;
+  left: 11px; top: 19px;
+  width: 12px; height: 6px;
+  border-bottom: 2px solid #0a2a44;
+  border-radius: 50%;
+}
+.watercycle-flake {
+  position: absolute; inset: 0;
+  display: none;
+  font-size: 26px;
+  line-height: 34px;
+  text-align: center;
+  color: #eaf6ff;
+  text-shadow: 0 0 4px #7fd4ff;
+}
+
+/* Drip stops on the cycle */
+.watercycle-drip--at-ocean  { left: 26%; top: 80%; }
+.watercycle-drip--at-sky    { left: 24%; top: 26%; }
+.watercycle-drip--at-cloud  { left: 70%; top: 11%; }
+.watercycle-drip--at-peak   { left: 74%; top: 44%; }
+.watercycle-drip--at-stream { left: 70%; top: 64%; }
+
+/* Drip forms */
+.watercycle-drip--vapor {
+  opacity: 0.55;
+  animation: watercycle-wiggle 0.7s ease-in-out infinite;
+}
+@keyframes watercycle-wiggle {
+  0%, 100% { transform: rotate(45deg) translateX(0); }
+  50%      { transform: rotate(45deg) translateX(6px); }
+}
+.watercycle-drip--hidden { opacity: 0; transform: rotate(45deg) scale(0.4); }
+.watercycle-drip--fall {
+  transition: left 0.9s ease-in, top 0.9s ease-in, opacity 0.3s, transform 0.4s;
+}
+.watercycle-drip--flake { background: none; border-color: transparent; }
+.watercycle-drip--flake .watercycle-eye,
+.watercycle-drip--flake .watercycle-smile { display: none; }
+.watercycle-drip--flake .watercycle-flake { display: block; }
+
+/* ---- effects layer ---- */
+.watercycle-fx {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+.watercycle-vapor {
+  position: absolute;
+  top: 72%;
+  font-size: 24px;
+  color: #cfeeff;
+  opacity: 0;
+  animation: watercycle-rise 1.7s ease-out forwards;
+}
+@keyframes watercycle-rise {
+  0%   { opacity: 0; transform: translateY(0); }
+  20%  { opacity: 0.9; }
+  100% { opacity: 0; transform: translateY(-120px); }
+}
+.watercycle-fall {
+  position: absolute;
+  top: 26%;
+  width: 6px; height: 12px;
+  border-radius: 50% 50% 60% 60%;
+  background: #7fd4ff;
+  opacity: 0;
+  animation: watercycle-falldrop 1.2s ease-in forwards;
+}
+.watercycle-fall--snow {
+  width: auto; height: auto;
+  background: none;
+  font-size: 16px;
+  color: #eaf6ff;
+  animation-duration: 1.7s;
+  animation-timing-function: linear;
+}
+@keyframes watercycle-falldrop {
+  0%   { opacity: 0; transform: translateY(0); }
+  15%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(95px); }
+}
+
+/* ---- stage-name banner ---- */
+.watercycle-banner {
+  position: absolute;
+  left: 50%; top: 42%;
+  transform: translate(-50%, -50%);
+  z-index: 7;
+  font-family: "Press Start 2P", monospace;
+  font-size: 17px;
+  color: #ffd23f;
+  text-shadow: 0 0 10px rgba(255, 210, 63, 0.8), 2px 2px 0 #06080f;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+.watercycle-banner--show { animation: watercycle-pop 1.5s ease forwards; }
+@keyframes watercycle-pop {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+  18%  { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+  30%  { transform: translate(-50%, -50%) scale(1); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ---- name-the-stage chips ---- */
+.watercycle-names {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  max-width: 360px;
+}
+.watercycle-names:empty { display: none; }
+.watercycle-chip {
+  font-family: VT323, monospace;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: var(--ink);
+  background: rgba(61, 242, 255, 0.08);
+  border: 2px solid var(--glow);
+  border-radius: 9px;
+  min-height: 48px;
+  padding: 8px 6px;
+}
+.watercycle-chip:active { background: rgba(61, 242, 255, 0.25); }
+.watercycle-chip:disabled { opacity: 0.45; }
+.watercycle-chip--right { background: rgba(53, 224, 106, 0.3); border-color: #35e06a; }
+.watercycle-chip--wrong { animation: watercycle-wobble 0.45s ease; border-color: #ff5d5d; }

@@ -1,0 +1,143 @@
+/* Life Cycle Garden — wheel of life stages. Shares the .mech shell from
+   mechanics.css; everything new is lc-prefixed. */
+
+.lctarget { font-family: VT323, monospace; font-size: 24px; color: var(--ink); text-align: center; }
+.lctarget b { color: var(--gold); font-size: 26px; }
+
+/* ---- the wheel ---- */
+.lcwheelbox { position: relative; width: min(64vw, 250px); flex-shrink: 0; }
+.lcwheel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 3px dashed rgba(61, 242, 255, 0.45);
+  border-radius: 50%;
+}
+.lcwheel.lcnudge { animation: lcnudge 0.45s ease; }
+@keyframes lcnudge {
+  0% { transform: rotate(0deg); }
+  45% { transform: rotate(9deg); }
+  100% { transform: rotate(0deg); }
+}
+.lcwheel.lcspin { animation: lcspinfull 1.5s ease-in-out 0.2s both; }
+@keyframes lcspinfull {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.lccenter {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 44px;
+}
+
+.lcslot {
+  position: absolute;
+  width: 52px; height: 52px;
+  transform: translate(-50%, -50%);
+  display: flex; align-items: center; justify-content: center;
+  border: 2px dashed rgba(61, 242, 255, 0.6);
+  border-radius: 50%;
+  background: rgba(6, 8, 15, 0.7);
+  font-family: VT323, monospace;
+  font-size: 20px;
+  color: var(--glow-soft);
+}
+.lcslot.filled {
+  border-style: solid;
+  border-color: var(--gold);
+  background: rgba(232, 163, 61, 0.16);
+  font-size: 30px;
+  animation: lcsnap 0.3s ease;
+}
+@keyframes lcsnap {
+  0% { transform: translate(-50%, -50%) scale(0.4); }
+  70% { transform: translate(-50%, -50%) scale(1.15); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ---- the cycle arrow that orbits once when the wheel completes ---- */
+.lcring {
+  position: absolute; inset: -8px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.lcring.lcgo { opacity: 1; animation: lcorbit 1.7s linear 0.2s both; }
+@keyframes lcorbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.lcarrowtip {
+  position: absolute; left: 50%; top: 0;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  color: var(--gold);
+  text-shadow: 0 0 8px rgba(232, 163, 61, 0.8);
+}
+
+/* ---- sparkles ---- */
+.lcspark {
+  position: absolute;
+  font-size: 22px;
+  pointer-events: none;
+  opacity: 0;
+  animation: lcspark 0.9s ease both;
+}
+@keyframes lcspark {
+  0% { opacity: 0; transform: scale(0.3); }
+  35% { opacity: 1; transform: scale(1.25); }
+  100% { opacity: 0; transform: scale(0.6) translateY(-14px); }
+}
+
+/* ---- the stage-card tray ---- */
+.lctray { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.lccard {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 74px; min-height: 74px;
+  padding: 8px 10px;
+  background: rgba(61, 242, 255, 0.08);
+  border: 2px solid var(--glow);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.lccard:active { background: rgba(61, 242, 255, 0.25); }
+.lccard.placed { opacity: 0.25; border-color: rgba(61, 242, 255, 0.3); }
+.lccarde { font-size: 30px; }
+.lccardname { font-family: VT323, monospace; font-size: 18px; color: var(--ink); }
+.lccard.lcwobble { animation: lcwobble 0.4s ease; }
+@keyframes lcwobble {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-6px) rotate(-3deg); }
+  50% { transform: translateX(6px) rotate(3deg); }
+  75% { transform: translateX(-4px) rotate(-2deg); }
+}
+
+/* ---- final round: pick the metamorphosis wheel ---- */
+.lcpicks {
+  position: relative;
+  display: flex; flex-wrap: wrap; gap: 12px;
+  justify-content: center;
+}
+.lcmini {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  min-width: 108px; min-height: 120px;
+  padding: 10px;
+  background: rgba(61, 242, 255, 0.06);
+  border: 2px solid var(--glow);
+  border-radius: 12px;
+  cursor: pointer;
+}
+.lcmini:active { background: rgba(61, 242, 255, 0.2); }
+.lcminiwheel {
+  position: relative;
+  display: block;
+  width: 86px; height: 86px;
+  border: 2px dashed rgba(61, 242, 255, 0.5);
+  border-radius: 50%;
+}
+.lcminis { position: absolute; transform: translate(-50%, -50%); font-size: 20px; }
+.lcminilabel { font-family: VT323, monospace; font-size: 18px; color: var(--ink); }
+.lcmini.lcwobble { animation: lcwobble 0.4s ease; }
+.lcmini.lcwin { border-color: var(--gold); box-shadow: 0 0 14px rgba(232, 163, 61, 0.5); }
+.lcmini.lcwin .lcminiwheel { animation: lcspinfull 1.4s ease-in-out; }

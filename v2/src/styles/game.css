@@ -1,0 +1,410 @@
+/* Super Mina World v2 — overlay UI styles.
+   NON-jits personal game: its own little design system (dark + neon glow,
+   Press Start 2P titles, VT323 body), carried over from v1 on purpose.
+   The overlay tracks the canvas box: same aspect, centered, crisp text. */
+
+:root {
+  --bg: #06080f;
+  --ink: #dfe9ff;
+  --glow: #3df2ff;
+  --glow-soft: #aef6ff;
+  --gold: #ffd24a;
+  --panel: rgba(10, 14, 28, 0.92);
+}
+
+#ui { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+
+/* every layer is a centered column matching the canvas aspect (270:480 FIT) */
+.uilayer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: min(100vh, calc(100vw * 480 / 270));
+  width: min(100vw, calc(100vh * 270 / 480));
+  pointer-events: none;
+}
+.uilayer > * { pointer-events: auto; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- dialogue (Pokémon box) ---------- */
+.dbox {
+  position: absolute;
+  left: 3%; right: 3%; bottom: 3%;
+  background: var(--panel);
+  border: 2px solid var(--glow);
+  border-radius: 10px;
+  box-shadow: 0 0 18px rgba(61, 242, 255, 0.35);
+  padding: 12px 14px 16px;
+  min-height: 92px;
+  z-index: 30;
+}
+.dbox .speaker {
+  font-family: "Press Start 2P", monospace;
+  font-size: 11px;
+  color: var(--glow);
+  margin-bottom: 7px;
+  letter-spacing: 1px;
+}
+.dbox .line {
+  font-family: VT323, monospace;
+  font-size: 23px;
+  line-height: 1.35;
+  color: var(--ink);
+  min-height: 32px;
+}
+.dbox .arrow {
+  position: absolute; right: 12px; bottom: 6px;
+  color: var(--glow);
+  animation: bob 0.8s infinite steps(2);
+}
+.choices { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.choices button {
+  font-family: VT323, monospace;
+  font-size: 22px;
+  color: var(--ink);
+  background: rgba(61, 242, 255, 0.08);
+  border: 2px solid var(--glow);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: left;
+}
+.choices button:active { background: rgba(61, 242, 255, 0.25); }
+
+/* ---------- question card ---------- */
+.qcard {
+  position: absolute;
+  left: 4%; right: 4%; top: 8%; bottom: 4%;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 2px solid var(--glow);
+  border-radius: 12px;
+  box-shadow: 0 0 22px rgba(61, 242, 255, 0.3);
+  padding: 14px 12px;
+  z-index: 25;
+}
+.qtitle {
+  font-family: VT323, monospace;
+  font-size: 26px;
+  line-height: 1.25;
+  color: var(--ink);
+  text-align: center;
+}
+.qart { border: 2px solid var(--glow); border-radius: 8px; box-shadow: 0 0 16px rgba(61, 242, 255, 0.4); background: var(--bg); max-width: 86%; }
+.qflag { font-size: 54px; line-height: 1; }
+.qopts { display: flex; flex-direction: column; gap: 9px; width: 100%; max-width: 330px; }
+.qopt {
+  font-family: VT323, monospace;
+  font-size: 24px;
+  color: var(--ink);
+  background: rgba(61, 242, 255, 0.07);
+  border: 2px solid rgba(174, 246, 255, 0.45);
+  border-radius: 9px;
+  padding: 13px 12px;
+  width: 100%;
+  transition: border-color 0.12s, box-shadow 0.12s, opacity 0.12s;
+}
+.qopt.right { border-color: var(--glow); box-shadow: 0 0 16px var(--glow); color: var(--glow); }
+.qopt.hint { border-color: var(--glow); box-shadow: 0 0 14px var(--glow); }
+.qopt.dim { opacity: 0.35; }
+.qmsg {
+  font-family: VT323, monospace;
+  font-size: 21px;
+  line-height: 1.3;
+  color: var(--glow-soft);
+  text-align: center;
+  min-height: 54px;
+  max-width: 340px;
+}
+
+/* ---------- battle ---------- */
+.battlepanel { position: absolute; left: 3%; right: 3%; bottom: 3%; z-index: 20; }
+.pstats { display: flex; gap: 6px; margin-bottom: 8px; }
+.pbox {
+  flex: 1;
+  background: var(--panel);
+  border: 2px solid var(--glow);
+  border-radius: 8px;
+  padding: 7px 8px;
+  box-shadow: 0 0 12px rgba(61, 242, 255, 0.25);
+}
+.pbox.ebox { border-color: #9b3bff; box-shadow: 0 0 12px rgba(155, 59, 255, 0.35); }
+.pname { font-family: "Press Start 2P", monospace; font-size: 8px; color: var(--ink); margin-bottom: 5px; }
+.pnum { font-family: VT323, monospace; font-size: 16px; color: var(--glow-soft); margin-top: 4px; }
+.hpbar { height: 8px; background: rgba(255, 255, 255, 0.12); border-radius: 4px; overflow: hidden; }
+.hpfill { height: 100%; background: linear-gradient(90deg, #35e06a, #aef6a0); transition: width 0.35s; }
+.hpbar.foe .hpfill { background: linear-gradient(90deg, #9b3bff, #ff3da6); }
+.bmenu { display: flex; gap: 7px; }
+.bact {
+  flex: 1;
+  font-family: "Press Start 2P", monospace;
+  font-size: 10px;
+  color: var(--ink);
+  background: var(--panel);
+  border: 2px solid var(--glow);
+  border-radius: 9px;
+  padding: 13px 6px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  box-shadow: 0 0 12px rgba(61, 242, 255, 0.25);
+}
+.bact:active { background: rgba(61, 242, 255, 0.2); }
+.bact:disabled { opacity: 0.4; }
+.bsub { font-family: VT323, monospace; font-size: 14px; color: var(--glow-soft); }
+.bquestion { position: absolute; inset: 0; z-index: 26; }
+
+/* ---------- hub HUD + stations ---------- */
+.hubhud {
+  position: absolute;
+  right: 2%; top: 2%;
+  display: flex; align-items: center; gap: 6px;
+  background: var(--panel);
+  border: 2px solid var(--glow);
+  border-radius: 18px;
+  padding: 5px 10px;
+  box-shadow: 0 0 12px rgba(61, 242, 255, 0.25);
+  z-index: 15;
+}
+.hudback { font-size: 18px; background: none; border: none; padding: 2px 6px; }
+.hudtitle { font-family: "Press Start 2P", monospace; font-size: 9px; color: var(--ink); flex: 1; }
+.hudright { font-family: VT323, monospace; font-size: 17px; color: var(--glow-soft); white-space: nowrap; }
+.stationleave {
+  position: absolute;
+  left: 6%; top: 3.2%;
+  z-index: 30;
+  width: 34px; height: 34px;
+  font-size: 16px;
+  color: var(--glow-soft);
+  background: var(--panel);
+  border: 2px solid rgba(174, 246, 255, 0.4);
+  border-radius: 50%;
+}
+.stationhead {
+  position: absolute; left: 4%; right: 4%; top: 2%;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 27;
+  background: var(--panel);
+  border: 2px solid var(--glow);
+  border-radius: 9px;
+  padding: 8px 12px;
+}
+.stationhead .dots { font-family: VT323, monospace; font-size: 18px; color: var(--gold); letter-spacing: 2px; }
+.stationbody { position: absolute; inset: 0; z-index: 26; }
+
+/* ---------- overworld ---------- */
+.owmap { position: absolute; inset: 0; }
+.owtitle {
+  position: absolute; left: 0; right: 0; top: 22%;
+  text-align: center;
+  font-family: "Press Start 2P", monospace;
+  font-size: 12px;
+  color: #21404a;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+.ownode {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 3px solid var(--gold);
+  border-radius: 12px;
+  padding: 8px 9px 6px;
+  min-width: 74px;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);
+  animation: nodebob 2.6s infinite ease-in-out;
+}
+.ownode:active { transform: translate(-50%, -50%) scale(0.96); }
+.ownode .oni { font-size: 24px; line-height: 1; }
+.ownode .onl { font-family: "Press Start 2P", monospace; font-size: 6px; color: #21404a; letter-spacing: 0.5px; }
+.ownode .onstar { position: absolute; top: -10px; right: -8px; font-size: 16px; }
+.ownode.done { border-color: #35e06a; }
+.ownode.castle { border-color: #9b3bff; background: #f4e9ff; }
+
+/* ---------- intro ---------- */
+.wakescreen {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+}
+.wakedot { width: 14px; height: 14px; border-radius: 50%; background: var(--glow); box-shadow: 0 0 22px var(--glow); animation: pulse 1.4s infinite; }
+.waketext { font-family: VT323, monospace; font-size: 22px; color: var(--glow-soft); }
+.panel.intropanel {
+  position: absolute; left: 6%; right: 6%; top: 50%;
+  transform: translateY(-50%);
+  background: var(--panel);
+  border: 2px solid var(--glow);
+  border-radius: 12px;
+  box-shadow: 0 0 22px rgba(61, 242, 255, 0.3);
+  padding: 20px 16px;
+  display: flex; flex-direction: column; gap: 12px; align-items: center;
+  z-index: 30;
+}
+.ptitle { font-family: "Press Start 2P", monospace; font-size: 14px; color: var(--ink); }
+.intropanel input {
+  font-family: VT323, monospace;
+  font-size: 26px;
+  color: var(--glow);
+  background: rgba(61, 242, 255, 0.07);
+  border: 2px solid var(--glow);
+  border-radius: 8px;
+  padding: 10px 12px;
+  width: 88%;
+  text-align: center;
+  text-transform: uppercase;
+  outline: none;
+}
+.bigbtn {
+  font-family: "Press Start 2P", monospace;
+  font-size: 11px;
+  color: var(--bg);
+  background: var(--glow);
+  border: none;
+  border-radius: 9px;
+  padding: 14px 18px;
+  box-shadow: 0 0 18px rgba(61, 242, 255, 0.5);
+}
+.bigbtn:active { transform: scale(0.97); }
+.buddyprev { font-size: 64px; line-height: 1; }
+.rowlabel { font-family: VT323, monospace; font-size: 18px; color: var(--glow-soft); text-transform: uppercase; letter-spacing: 2px; }
+.pickrow { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.pickrow button { width: 38px; height: 38px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.6); }
+.pickrow .pickopt { background: rgba(61, 242, 255, 0.07); font-size: 19px; border-color: rgba(174, 246, 255, 0.4); border-radius: 9px; }
+.pickrow .pickopt.sel { border-color: var(--glow); box-shadow: 0 0 12px var(--glow); }
+.creatorpanel { gap: 8px; max-height: 88%; overflow-y: auto; }
+.creatorpanel .buddyprev { font-size: 48px; }
+
+/* ---------- overworld footer tools ---------- */
+.owfoot {
+  position: absolute; left: 0; right: 0; bottom: 2%;
+  display: flex; justify-content: center; gap: 8px;
+}
+.owtool {
+  font-family: VT323, monospace;
+  font-size: 17px;
+  color: #2c4a38;
+  background: rgba(255, 255, 255, 0.85);
+  border: 2px solid rgba(44, 74, 56, 0.4);
+  border-radius: 16px;
+  padding: 7px 11px;
+}
+
+/* ---------- grown-ups / tools panel ---------- */
+.gpanel {
+  position: absolute; left: 4%; right: 4%; top: 4%; bottom: 4%;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 2px solid var(--glow);
+  border-radius: 12px;
+  box-shadow: 0 0 22px rgba(61, 242, 255, 0.3);
+  padding: 18px 14px;
+  display: flex; flex-direction: column; gap: 12px; align-items: center;
+  z-index: 40;
+}
+.gtitle { font-family: "Press Start 2P", monospace; font-size: 13px; color: var(--ink); }
+.gbody {
+  font-family: VT323, monospace;
+  font-size: 20px; line-height: 1.35;
+  color: var(--glow-soft);
+  text-align: center;
+}
+.gfine { font-size: 17px; opacity: 0.8; }
+.ginput, .gcode {
+  font-family: VT323, monospace;
+  font-size: 20px;
+  color: var(--glow);
+  background: rgba(61, 242, 255, 0.07);
+  border: 2px solid var(--glow);
+  border-radius: 8px;
+  padding: 10px;
+  width: 90%;
+  text-align: center;
+  outline: none;
+}
+.gcode { font-size: 13px; height: 84px; word-break: break-all; text-align: left; }
+.growbtns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.gbtn {
+  font-family: "Press Start 2P", monospace;
+  font-size: 10px;
+  color: var(--ink);
+  background: rgba(61, 242, 255, 0.08);
+  border: 2px solid var(--glow);
+  border-radius: 9px;
+  padding: 12px 14px;
+}
+.gbtn:active { background: rgba(61, 242, 255, 0.25); }
+.greport { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+.gworld { border: 1px solid rgba(174, 246, 255, 0.25); border-radius: 9px; padding: 9px; }
+.gworldname { font-family: "Press Start 2P", monospace; font-size: 9px; color: var(--ink); margin-bottom: 7px; }
+.gskill {
+  display: flex; justify-content: space-between; gap: 8px;
+  font-family: VT323, monospace; font-size: 18px; color: var(--glow-soft);
+  padding: 2px 0;
+}
+.gplist { display: flex; flex-direction: column; gap: 8px; width: 90%; }
+.gprof.active { border-color: var(--gold); }
+.colgrid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 9px; width: 100%; }
+.colitem {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  border: 1px solid rgba(174, 246, 255, 0.25);
+  border-radius: 9px;
+  padding: 10px 4px;
+  opacity: 0.45;
+}
+.colitem.got { opacity: 1; border-color: var(--gold); box-shadow: 0 0 10px rgba(255, 210, 74, 0.3); }
+.colemoji { font-size: 30px; }
+.colname { font-family: "Press Start 2P", monospace; font-size: 6px; color: var(--ink); text-align: center; }
+.colhow { font-family: VT323, monospace; font-size: 14px; color: var(--glow-soft); text-align: center; line-height: 1.15; }
+
+/* ---------- citadel ---------- */
+.citadelhall {
+  position: absolute; left: 5%; right: 5%; top: 12%; bottom: 4%;
+  display: flex; flex-direction: column; gap: 12px; align-items: center;
+  overflow-y: auto;
+}
+.chall { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; width: 100%; }
+.cdoor {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 26px;
+  background: rgba(20, 10, 30, 0.92);
+  border: 2px solid #4a2a6a;
+  border-radius: 10px;
+  padding: 12px 6px;
+  opacity: 0.55;
+}
+.cdoor .cdl { font-family: "Press Start 2P", monospace; font-size: 7px; color: #c9a0ff; }
+.cdoor.next { opacity: 1; border-color: #9b3bff; box-shadow: 0 0 16px rgba(155, 59, 255, 0.5); animation: freshpulse 1.6s infinite; }
+.cdoor.beaten { opacity: 0.8; border-color: #35e06a; }
+.cthrone {
+  font-family: "Press Start 2P", monospace;
+  font-size: 11px;
+  color: #1a0a24;
+  background: #ffd24a;
+  border: none;
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: 0 0 22px rgba(255, 210, 74, 0.6);
+}
+.cthrone.beaten { opacity: 0.6; }
+.clocked { font-family: VT323, monospace; font-size: 20px; color: #c9a0ff; }
+.cback {
+  font-family: VT323, monospace;
+  font-size: 19px;
+  color: #c9a0ff;
+  background: none;
+  border: 2px solid #4a2a6a;
+  border-radius: 9px;
+  padding: 9px 14px;
+}
+@keyframes freshpulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(155, 59, 255, 0.4); }
+  50% { box-shadow: 0 0 24px rgba(155, 59, 255, 0.8); }
+}
+
+/* ---------- shared animations ---------- */
+@keyframes bob { 0% { transform: translateY(0); } 100% { transform: translateY(3px); } }
+@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.35); opacity: 0.6; } }
+@keyframes nodebob { 0%, 100% { margin-top: 0; } 50% { margin-top: -4px; } }

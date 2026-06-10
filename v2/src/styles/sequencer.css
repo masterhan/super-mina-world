@@ -1,0 +1,161 @@
+/* Loop Lagoon — sequencer mechanic. Stones grid, BYTE blob, program row,
+   move/loop blocks. Shares the .mech shell classes from mechanics.css.
+   Grid constants (STEP/SZ/PAD) live in mechanics/sequencer.ts — .seqstone
+   width/height must equal SZ there. */
+
+.seqgoal {
+  font-family: VT323, monospace;
+  font-size: 22px;
+  color: var(--ink);
+  text-align: center;
+  max-width: 340px;
+}
+
+/* ---- the lagoon ---- */
+.seqlake {
+  position: relative;
+  flex: 0 0 auto;
+  background: linear-gradient(160deg, #0b2740, #0d3a5c 55%, #0b2740);
+  border: 2px solid #1b5e8a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.seqlake::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(115deg, transparent 0 14px, rgba(120, 200, 255, 0.06) 14px 16px);
+  animation: seqwater 5s linear infinite;
+  pointer-events: none;
+}
+@keyframes seqwater {
+  from { transform: translateX(0); }
+  to { transform: translateX(28px); }
+}
+
+.seqstone {
+  position: absolute;
+  width: 48px;
+  height: 48px; /* = SZ in sequencer.ts */
+  background: radial-gradient(circle at 35% 30%, #9fb4c4, #5d7282 70%);
+  border: 2px solid #2e3c47;
+  border-radius: 38%;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.seqgoalstone {
+  border-color: var(--gold);
+  box-shadow: 0 0 14px rgba(255, 214, 90, 0.55);
+}
+
+/* BYTE — a simple cyan blob with sleepy little eyes */
+.seqbyte {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #b9f6ff, #3df2ff 45%, #0e7e97);
+  box-shadow: 0 0 12px rgba(61, 242, 255, 0.75);
+  transition: left 0.32s ease, top 0.32s ease;
+  z-index: 2;
+}
+.seqbyte::before,
+.seqbyte::after {
+  content: '';
+  position: absolute;
+  top: 11px;
+  width: 5px;
+  height: 7px;
+  border-radius: 50%;
+  background: #06222b;
+}
+.seqbyte::before { left: 9px; }
+.seqbyte::after { right: 9px; }
+
+.seqbyte.seqfall { animation: seqfall 0.9s ease forwards; }
+@keyframes seqfall {
+  0% { transform: rotate(0deg) scale(1); opacity: 1; }
+  30% { transform: rotate(-14deg) scale(1.05); opacity: 1; }
+  100% { transform: rotate(10deg) scale(0.25) translateY(12px); opacity: 0.1; }
+}
+.seqbyte.seqglow {
+  box-shadow: 0 0 26px var(--glow), 0 0 50px rgba(61, 242, 255, 0.5);
+}
+
+/* ---- program row ---- */
+.seqprog {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 50px;
+  padding: 5px 8px;
+  border: 2px dashed rgba(61, 242, 255, 0.4);
+  border-radius: 10px;
+}
+.seqprog.seqshake { animation: seqshake 0.4s ease; }
+@keyframes seqshake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-3px); }
+}
+.seqslot {
+  width: 44px;
+  height: 44px;
+  border: 2px dashed rgba(140, 170, 190, 0.45);
+  border-radius: 9px;
+}
+.seqblk {
+  min-width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: VT323, monospace;
+  font-size: 24px;
+  color: var(--ink);
+  background: rgba(61, 242, 255, 0.12);
+  border: 2px solid var(--glow);
+  border-radius: 9px;
+  padding: 0 6px;
+  transition: background 0.15s, transform 0.15s;
+}
+.seqblk.seqrep {
+  border-color: var(--gold);
+  background: rgba(255, 214, 90, 0.12);
+  font-size: 19px;
+}
+.seqblk.seqactive {
+  background: rgba(61, 242, 255, 0.45);
+  transform: scale(1.08);
+}
+
+/* ---- tool buttons ---- */
+.seqtools {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.seqtool {
+  min-width: 52px;
+  min-height: 52px;
+  font-family: VT323, monospace;
+  font-size: 26px;
+  color: var(--ink);
+  background: rgba(61, 242, 255, 0.08);
+  border: 2px solid var(--glow);
+  border-radius: 9px;
+  padding: 4px 10px;
+}
+.seqtool:active { background: rgba(61, 242, 255, 0.25); }
+.seqtool:disabled { opacity: 0.35; }
+.seqlooptool {
+  border-color: var(--gold);
+  color: var(--gold);
+  font-size: 20px;
+}

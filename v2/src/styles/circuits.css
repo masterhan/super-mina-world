@@ -1,0 +1,131 @@
+/* Circuit Works — board loop, current-flow animation, bulb glow, parts tray.
+   Shares the .mech shell from mechanics.css; everything here is circ-prefixed. */
+
+.circmech { gap: 8px; }
+
+/* ---- board ---- */
+.circboard {
+  position: relative;
+  width: min(86vw, 330px);
+  height: 220px;
+  flex: none;
+  margin-top: 4px;
+}
+.circtrack {
+  position: absolute;
+  background: #233246;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.circtrack-top    { top: 26px; left: 30px; right: 30px; height: 8px; }
+.circtrack-bottom { bottom: 26px; left: 30px; right: 30px; height: 8px; }
+.circtrack-left   { left: 26px; top: 30px; bottom: 30px; width: 8px; }
+.circtrack-right  { right: 26px; top: 30px; bottom: 30px; width: 8px; }
+
+.circboard.lit .circtrack {
+  background: repeating-linear-gradient(90deg, #ffd84d 0 10px, #ff9d2e 10px 20px);
+  box-shadow: 0 0 10px rgba(255, 216, 77, 0.7);
+  animation: circflow 0.5s linear infinite;
+}
+.circboard.lit .circtrack-left,
+.circboard.lit .circtrack-right {
+  background: repeating-linear-gradient(0deg, #ffd84d 0 10px, #ff9d2e 10px 20px);
+  animation: circflowv 0.5s linear infinite;
+}
+@keyframes circflow  { to { background-position: 20px 0; } }
+@keyframes circflowv { to { background-position: 0 20px; } }
+
+/* ---- nodes ---- */
+.circnode {
+  position: absolute;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 32px;
+  line-height: 1;
+}
+.circbulb {
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 60px; height: 56px;
+  font-size: 40px;
+  filter: grayscale(1) brightness(0.55);
+  transition: filter 0.25s;
+}
+.circboard.lit .circbulb {
+  animation: circglow 0.9s ease-in-out infinite alternate;
+}
+@keyframes circglow {
+  from { filter: drop-shadow(0 0 6px #ffe97a) brightness(1.1); }
+  to   { filter: drop-shadow(0 0 18px #ffd84d) brightness(1.5); }
+}
+.circbattery {
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 80px; height: 56px;
+  gap: 2px;
+}
+.circlabel {
+  font-family: VT323, monospace;
+  font-size: 16px;
+  color: var(--glow-soft);
+  line-height: 1;
+}
+
+/* ---- gap slots ---- */
+.circslot {
+  width: 56px; height: 56px;
+  top: 50%;
+  border: 3px dashed var(--glow);
+  border-radius: 10px;
+  background: rgba(61, 242, 255, 0.07);
+  cursor: pointer;
+  font-family: VT323, monospace;
+  font-size: 26px;
+  color: var(--glow-soft);
+  gap: 2px;
+}
+.circslot-right { right: 0; transform: translateY(-50%); }
+.circslot-left  { left: 0;  transform: translateY(-50%); }
+.circslot.filled { border-style: solid; background: rgba(61, 242, 255, 0.12); }
+.circslot .circpart-emoji { font-size: 28px; line-height: 1; transition: transform 0.15s, opacity 0.15s; }
+.circslot.circswitch.open .circpart-emoji { transform: rotate(-30deg); opacity: 0.7; }
+.circslot.fizzle {
+  border-color: #ff5d5d;
+  animation: circwobble 0.5s ease;
+}
+@keyframes circwobble {
+  0%, 100% { transform: translateY(-50%) translateX(0); }
+  20% { transform: translateY(-50%) translateX(-6px); }
+  40% { transform: translateY(-50%) translateX(6px); }
+  60% { transform: translateY(-50%) translateX(-4px); }
+  80% { transform: translateY(-50%) translateX(4px); }
+}
+
+/* ---- parts tray ---- */
+.circtray {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  width: 100%;
+  padding-bottom: 4px;
+}
+.circpart {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  min-width: 76px; min-height: 64px;
+  padding: 8px 10px;
+  font-family: VT323, monospace;
+  font-size: 16px;
+  color: var(--ink);
+  background: rgba(61, 242, 255, 0.08);
+  border: 2px solid var(--glow);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
+}
+.circpart .circpart-emoji { font-size: 26px; line-height: 1; }
+.circpart .circpart-name { font-size: 16px; }
+.circpart.sel {
+  border-color: var(--gold);
+  background: rgba(255, 216, 77, 0.15);
+  box-shadow: 0 0 10px rgba(255, 216, 77, 0.5);
+  transform: scale(1.06);
+}
+.circpart:active { background: rgba(61, 242, 255, 0.25); }
+.circpart:disabled { opacity: 0.3; cursor: default; }

@@ -1,0 +1,56 @@
+/* Hands-on station mechanics — shared shell + per-mechanic bits.
+   Same neon-dark language as game.css. */
+
+.mech {
+  position: absolute;
+  left: 4%; right: 4%; top: 2%; bottom: 3%;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 2px solid var(--glow);
+  border-radius: 12px;
+  box-shadow: 0 0 22px rgba(61, 242, 255, 0.3);
+  padding: 12px;
+  z-index: 26;
+}
+.mechhead {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.mechtitle { font-family: "Press Start 2P", monospace; font-size: 11px; color: var(--ink); }
+.mech .dots { font-family: VT323, monospace; font-size: 18px; color: var(--gold); letter-spacing: 2px; }
+.mechmsg, .fracmsg {
+  font-family: VT323, monospace;
+  font-size: 21px; line-height: 1.3;
+  color: var(--glow-soft);
+  text-align: center;
+  min-height: 56px;
+  max-width: 340px;
+}
+.mechbtns, .fracbtns { display: flex; gap: 10px; }
+.mechbtns button, .fracbtns button {
+  font-family: "Press Start 2P", monospace;
+  font-size: 11px;
+  color: var(--ink);
+  background: rgba(61, 242, 255, 0.08);
+  border: 2px solid var(--glow);
+  border-radius: 9px;
+  padding: 13px 16px;
+}
+.mechbtns button:active, .fracbtns button:active { background: rgba(61, 242, 255, 0.25); }
+.mechbtns button:disabled, .fracbtns button:disabled { opacity: 0.35; }
+
+/* ---- pizza splitter ---- */
+.fractarget { font-family: VT323, monospace; font-size: 24px; color: var(--ink); }
+.fractarget b { color: var(--gold); font-size: 28px; }
+.pizzabox { width: min(64vw, 240px); }
+.pizza { width: 100%; height: auto; }
+.pizza .slice {
+  fill: #e8a33d;
+  stroke: #06080f;
+  stroke-width: 3;
+  cursor: pointer;
+  transition: fill 0.15s, transform 0.15s;
+}
+.pizza .slice:hover { fill: #f2b656; }
+.pizza .slice.served { fill: #35e06a; transform: scale(0.93); transform-origin: center; }

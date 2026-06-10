@@ -1,0 +1,34 @@
+{
+  "name": "super-mina-world",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "verify": "node tmp/verify-v2.mjs",
+    "verify:battle": "node tmp/verify-battle.mjs",
+    "genicons": "node tmp/genicons.mjs",
+    "ls:mech": "ls src/mechanics src/styles",
+    "git:status": "cd .. && git add -A && git status --short",
+    "cleanup:worldscene": "rm -f src/scenes/WorldScene.ts && cd .. && git add -A && git status --short | wc -l",
+    "git:commit": "cd .. && git commit -F v2/tmp/commitmsg.txt && git log --oneline -2",
+    "assets:tree": "find vendor/NinjaAdventure -type d -maxdepth 3 | sort",
+    "assets:png": "find vendor/NinjaAdventure -name '*.png' | sort",
+    "assets:audio": "find vendor/NinjaAdventure \\( -name '*.ogg' -o -name '*.wav' -o -name '*.mp3' \\) | sort",
+    "assets:music": "mkdir -p public/assets/music && cp vendor/NinjaAdventure/audio/music/theme_plain.ogg public/assets/music/overworld.ogg && cp vendor/NinjaAdventure/audio/music/theme_lost_village.ogg public/assets/music/world_a.ogg && cp vendor/NinjaAdventure/audio/music/theme_dream.ogg public/assets/music/world_b.ogg && cp vendor/NinjaAdventure/audio/music/theme_swamp.ogg public/assets/music/boss.ogg && ls -la public/assets/music",
+    "assets:junkala": "mkdir -p vendor/junkala && curl -sL 'https://opengameart.org/sites/default/files/Juhani%20Junkala%20%5BChiptune%20Adventures%5D%20OGG.zip' -o vendor/junkala/adventures.zip && cd vendor/junkala && unzip -o adventures.zip && ls -la",
+    "assets:battle": "cp 'vendor/junkala/Juhani Junkala [Chiptune Adventures] 1. Stage 1.ogg' public/assets/music/battle.ogg && cp 'vendor/junkala/Juhani Junkala [Chiptune Adventures] 3. Boss Fight.ogg' public/assets/music/boss.ogg && cp 'vendor/junkala/Juhani Junkala [Chiptune Adventures] 4. Stage Select.ogg' public/assets/music/victory.ogg && ls -la public/assets/music",
+    "assets:kenney": "mkdir -p vendor/kenney && curl -sL 'https://kenney.nl/media/pages/assets/tiny-dungeon/f8422efb44-1674742415/kenney_tiny-dungeon.zip' -o vendor/kenney/tiny-dungeon.zip && cd vendor/kenney && unzip -oq tiny-dungeon.zip -d tiny-dungeon && find tiny-dungeon -name '*.png' | head -20 && cat tiny-dungeon/License.txt 2>/dev/null || true"
+  },
+  "dependencies": {
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.4"
+  }
+}

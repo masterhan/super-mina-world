@@ -1,0 +1,181 @@
+/* Push, Pull & Poles — water tank (Part A) + magnet track (Part B).
+   Shares the .mech shell from mechanics.css; everything here is forces-only. */
+
+.forcesask {
+  font-family: VT323, monospace;
+  font-size: 24px;
+  line-height: 1.2;
+  color: var(--ink);
+  text-align: center;
+  max-width: 340px;
+}
+.forcesask b { color: var(--gold); }
+
+/* prediction buttons — big readable tap targets */
+.mechbtns button.forcesguess {
+  font-family: VT323, monospace;
+  font-size: 22px;
+  min-height: 52px;
+  min-width: 132px;
+  padding: 12px 14px;
+}
+
+/* ---- Part A: the water tank ---- */
+.forcestank {
+  position: relative;
+  flex: none;
+  width: min(72vw, 270px);
+  height: 210px;
+  border: 2px solid var(--glow);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #0a1626;
+}
+.forceswater {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 66%;
+  background: linear-gradient(180deg, #2a6fd6 0%, #1b4fa8 55%, #123a82 100%);
+  border-top: 3px solid #7fd4ff;
+}
+.forcesbub {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.forcesobj {
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  margin-left: -24px;
+  width: 48px;
+  font-size: 42px;
+  line-height: 1;
+  text-align: center;
+  z-index: 2;
+  transition: top 0.75s ease-in;
+}
+.forcesobj.forcesfloating {
+  top: 26%;
+  animation: forcesbob 1.4s ease-in-out 0.8s infinite;
+}
+.forcesobj.forcessinking {
+  top: 76%;
+  transform: rotate(14deg);
+  transition: top 0.75s ease-in, transform 0.75s ease-in;
+}
+@keyframes forcesbob {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(7px) rotate(4deg); }
+}
+
+/* splash droplets — fly out from the waterline, fade */
+.forcesdroplet {
+  position: absolute;
+  left: 50%;
+  top: 33%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #7fd4ff;
+  z-index: 4;
+  pointer-events: none;
+  animation: forcessplash 0.6s ease-out forwards;
+}
+@keyframes forcessplash {
+  from { transform: translate(0, 0); opacity: 0.95; }
+  to { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+}
+
+/* bubbles rise when something sinks */
+.forcesbubble {
+  position: absolute;
+  bottom: 8%;
+  border-radius: 50%;
+  border: 2px solid #9fdcff;
+  background: rgba(159, 220, 255, 0.18);
+  pointer-events: none;
+  animation: forcesrise 1.2s ease-in forwards;
+}
+@keyframes forcesrise {
+  from { transform: translateY(0); opacity: 0.9; }
+  to { transform: translateY(-110px); opacity: 0; }
+}
+
+/* tank / track armed as a tap target after the prediction */
+.forcestappable { cursor: pointer; }
+
+/* gentle "ooh, look again" wobble (never shaming) */
+.forceswobble { animation: forceswobbleanim 0.55s ease-in-out; }
+@keyframes forceswobbleanim {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-2.5deg); }
+  75% { transform: rotate(2.5deg); }
+}
+
+/* ---- Part B: the magnet track ---- */
+.forcestrack {
+  position: relative;
+  flex: none;
+  width: min(86vw, 330px);
+  height: 130px;
+  overflow: hidden;
+}
+.forcesrail {
+  position: absolute;
+  left: 4px; right: 4px;
+  top: 88px;
+  height: 4px;
+  border-radius: 2px;
+  background: #3a4763;
+}
+.forcesmag {
+  position: absolute;
+  top: 32px;
+  width: 108px;
+  height: 52px;
+  display: flex;
+  border: 3px solid #e9eef9;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 2;
+  font-family: "Press Start 2P", monospace;
+  transition: transform 0.55s cubic-bezier(0.5, 0, 0.4, 1.25);
+}
+.forcesmag-left { left: calc(50% - 124px); }
+.forcesmag-right { left: calc(50% + 16px); }
+.forcespole {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #ffffff;
+}
+.forcespole-n { background: #e8533d; }
+.forcespole-s { background: #3b7bff; }
+
+.forcesflipping { transform: rotateY(90deg); }
+.forcespull-l { transform: translateX(16px); }
+.forcespull-r { transform: translateX(-16px); }
+.forcespush-l { transform: translateX(-40px); }
+.forcespush-r { transform: translateX(40px); }
+
+/* spark when opposite poles click together */
+.forcesspark {
+  position: absolute;
+  left: 50%;
+  top: 38px;
+  margin-left: -14px;
+  font-size: 26px;
+  opacity: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.forcesspark.forcesclink { animation: forcesclinkanim 0.7s ease-out forwards; }
+@keyframes forcesclinkanim {
+  0% { opacity: 0; transform: scale(0.4); }
+  30% { opacity: 1; transform: scale(1.3); }
+  100% { opacity: 0; transform: scale(1); }
+}

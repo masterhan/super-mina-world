@@ -1,0 +1,161 @@
+/* Number Forge — 0–100 number line. Shares the .mech shell from mechanics.css;
+   everything new is numberline- prefixed. */
+
+.numberline-target {
+  font-family: VT323, monospace;
+  font-size: 24px;
+  color: var(--ink);
+  text-align: center;
+}
+.numberline-target b { color: var(--gold); font-size: 30px; }
+
+/* the whole strip is the tap surface — tall + forgiving */
+.numberline-strip {
+  position: relative;
+  width: 100%;
+  height: 170px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.numberline-rail {
+  position: absolute;
+  left: 22px; right: 22px; top: 0; bottom: 0;
+}
+.numberline-track {
+  position: absolute;
+  left: 0; right: 0; bottom: 58px;
+  height: 4px;
+  background: var(--glow);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(61, 242, 255, 0.5);
+}
+.numberline-tick {
+  position: absolute;
+  bottom: 50px;
+  width: 2px; height: 20px;
+  margin-left: -1px;
+  background: var(--glow-soft);
+}
+.numberline-ticklabel {
+  position: absolute;
+  bottom: 22px;
+  width: 38px;
+  margin-left: -19px;
+  text-align: center;
+  font-family: VT323, monospace;
+  font-size: 17px;
+  color: var(--ink);
+}
+
+.numberline-hidden { display: none; }
+
+/* the place-it marker (centered with margins so keyframes own transform) */
+.numberline-marker {
+  position: absolute;
+  bottom: 62px;
+  width: 40px;
+  margin-left: -20px;
+  text-align: center;
+  font-size: 28px;
+  transition: left 0.9s cubic-bezier(0.45, 0, 0.25, 1);
+  pointer-events: none;
+}
+.numberline-marker span { display: inline-block; }
+.numberline-dropping span { animation: numberline-drop 0.35s ease-out; }
+@keyframes numberline-drop {
+  from { transform: translateY(-30px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* the rounding frog + the flag showing its start number */
+.numberline-frog {
+  position: absolute;
+  bottom: 62px;
+  width: 44px;
+  margin-left: -22px;
+  text-align: center;
+  font-size: 32px;
+  transition: left 0.7s cubic-bezier(0.45, 0, 0.3, 1);
+  pointer-events: none;
+}
+.numberline-frog span { display: inline-block; }
+.numberline-frog.numberline-hop span { animation: numberline-hoparc 0.7s ease-out; }
+@keyframes numberline-hoparc {
+  0%   { transform: translateY(0) scaleX(1); }
+  35%  { transform: translateY(-46px) scaleX(1.1); }
+  70%  { transform: translateY(0) scaleX(1); }
+  82%  { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+.numberline-flag {
+  position: absolute;
+  bottom: 106px;
+  width: 44px;
+  margin-left: -22px;
+  text-align: center;
+  font-family: VT323, monospace;
+  font-size: 19px;
+  color: var(--gold);
+  pointer-events: none;
+}
+
+/* lock-in pulse ring on the track */
+.numberline-spot {
+  position: absolute;
+  bottom: 47px;
+  width: 26px; height: 26px;
+  margin-left: -13px;
+  border: 3px solid var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.numberline-pulse { animation: numberline-pulse 0.9s ease-out 2; }
+@keyframes numberline-pulse {
+  0%   { transform: scale(0.4); opacity: 1; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* gentle "not that one" wobble — tick labels + badges */
+.numberline-wobble { animation: numberline-wobble 0.4s ease-in-out; }
+@keyframes numberline-wobble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-3px); }
+}
+
+/* place-value badges sit ON the line where they live */
+.numberline-badge {
+  position: absolute;
+  bottom: 72px;
+  width: 58px; height: 48px;
+  margin-left: -29px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 16px;
+  color: var(--ink);
+  background: rgba(61, 242, 255, 0.08);
+  border: 2px solid var(--glow);
+  border-radius: 9px;
+  cursor: pointer;
+}
+.numberline-badge::after {
+  content: '';
+  position: absolute;
+  top: 100%; left: 50%;
+  width: 2px; height: 12px;
+  margin-left: -1px;
+  background: var(--glow-soft);
+}
+.numberline-badge:active { background: rgba(61, 242, 255, 0.25); }
+.numberline-badge-win {
+  border-color: var(--gold);
+  color: var(--gold);
+  animation: numberline-bwin 0.5s ease-out;
+}
+@keyframes numberline-bwin {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+.numberline-badge-dim { opacity: 0.35; }

@@ -1,0 +1,99 @@
+/* Food Chain Falls — build-the-chain mechanic.
+   Reuses the .mech shell from mechanics.css; everything here is fc-prefixed. */
+
+.fchabitat { font-family: VT323, monospace; font-size: 24px; color: var(--ink); }
+
+/* vertical chain of slots — energy flows top (sun) to bottom */
+.fcchain {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  width: 100%;
+}
+.fcslot {
+  width: min(80vw, 300px);
+  min-height: 48px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 4px 12px;
+  border: 2px dashed rgba(61, 242, 255, 0.45);
+  border-radius: 9px;
+  background: rgba(61, 242, 255, 0.05);
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.fcslot.full {
+  border-style: solid;
+  border-color: var(--glow);
+  background: rgba(61, 242, 255, 0.1);
+}
+.fcslot.zap {
+  border-color: #ffd65a;
+  box-shadow: 0 0 14px rgba(255, 214, 90, 0.8);
+}
+.fcslot.quizhl {
+  border-color: #ffd65a;
+  animation: fcpulsehl 0.9s ease-in-out infinite;
+}
+.fcq { font-family: VT323, monospace; font-size: 24px; color: var(--glow-soft); margin: 0 auto; }
+.fcemoji { font-size: 26px; line-height: 1; }
+.fcname { font-family: VT323, monospace; font-size: 21px; color: var(--ink); }
+.fcrole {
+  margin-left: auto;
+  font-family: VT323, monospace;
+  font-size: 16px; letter-spacing: 1px;
+  color: #ffd65a;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.fcrole.show { opacity: 1; transform: none; }
+.fcarrow { font-size: 16px; color: var(--gold); line-height: 1; }
+
+/* the glowing energy pulse that travels down a finished chain */
+.fcdot {
+  position: absolute;
+  left: 50%; top: 0;
+  width: 18px; height: 18px; margin-left: -9px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff7c2 0%, #ffd65a 55%, rgba(255, 214, 90, 0) 100%);
+  box-shadow: 0 0 16px 6px rgba(255, 214, 90, 0.65);
+  opacity: 0;
+  pointer-events: none;
+  transition: top 0.42s linear, opacity 0.25s;
+}
+.fcdot.on { opacity: 1; }
+
+/* shuffled organism cards to tap */
+.fcsupply {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+  width: 100%;
+}
+.fccard {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 76px; min-height: 60px;
+  padding: 8px 10px;
+  font-family: VT323, monospace;
+  font-size: 17px;
+  color: var(--ink);
+  background: rgba(61, 242, 255, 0.08);
+  border: 2px solid var(--glow);
+  border-radius: 9px;
+  cursor: pointer;
+}
+.fccard .fce { font-size: 26px; line-height: 1; }
+.fccard:active { background: rgba(61, 242, 255, 0.25); }
+.fccard.used { opacity: 0; pointer-events: none; }
+.fccard.wobble { animation: fcwobble 0.45s ease; border-color: #ff6b6b; }
+
+/* final-round role quiz buttons (stacked full-width for small screens) */
+.fcquiz { flex-direction: column; width: min(82vw, 320px); }
+.fcquiz button { width: 100%; min-height: 48px; }
+.fcquiz button.wobble { animation: fcwobble 0.45s ease; border-color: #ff6b6b; }
+
+@keyframes fcwobble {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  20% { transform: translateX(-7px) rotate(-3deg); }
+  45% { transform: translateX(6px) rotate(2.5deg); }
+  70% { transform: translateX(-4px) rotate(-1.5deg); }
+}
+@keyframes fcpulsehl {
+  0%, 100% { box-shadow: 0 0 6px rgba(255, 214, 90, 0.4); }
+  50% { box-shadow: 0 0 18px rgba(255, 214, 90, 0.95); }
+}
