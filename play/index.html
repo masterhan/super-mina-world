@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Super Mina World</title>
+<meta name="description" content="A learning adventure: eight worlds of real science, math, words and maps. No ads. No accounts. Nothing to buy, ever.">
+
+<!-- share preview (iMessage/WhatsApp link unfurl) -->
+<meta property="og:title" content="Super Mina World">
+<meta property="og:description" content="Eight worlds to save with science, math, words and maps. Free, no ads, nothing to buy — ever.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://superminaworld.pages.dev/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- installable app -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<meta name="theme-color" content="#06080f">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  /* Personal kids game — standalone design, not the jits design system. */
+  html, body { margin: 0; padding: 0; height: 100%; background: #06080f; overflow: hidden; }
+  #game { width: 100%; height: 100%; }
+  #game canvas { image-rendering: pixelated; }
+  /* kid-friendly crash recovery (filled by the global error handler) */
+  #crash {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: #06080f; color: #aef6ff;
+    font-family: VT323, monospace; font-size: 24px; text-align: center;
+    flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+  }
+  #crash button {
+    font-family: "Press Start 2P", monospace; font-size: 12px;
+    color: #06080f; background: #3df2ff; border: none; border-radius: 10px;
+    padding: 16px 20px; box-shadow: 0 0 18px rgba(61,242,255,.5); cursor: pointer;
+  }
+</style>
+  <script type="module" crossorigin src="./assets/index-DMEkMusy.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DfphunIv.css">
+</head>
+<body>
+<div id="game"></div>
+<div id="crash">
+  <div style="font-size:46px">⚡</div>
+  <div>The Realm glitched!<br>Your game is saved — jump back in.</div>
+  <button onclick="location.reload()">▶ JUMP BACK IN</button>
+</div>
+<script>
+  // crash safety: saves persist at every step, so a reload never loses progress
+  function smwCrash() { var c = document.getElementById('crash'); if (c) c.style.display = 'flex'; }
+  window.addEventListener('error', function (e) { if (e && e.message && !/ResizeObserver|Script error/.test(e.message)) smwCrash(); });
+  window.addEventListener('unhandledrejection', function () { /* fetch/audio promise noise shouldn't scare anyone */ });
+  // offline play + home-screen install
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+  }
+</script>
+</body>
+</html>
